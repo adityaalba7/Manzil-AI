@@ -4,8 +4,9 @@
   "description": "TriMind AI — REST API backend (Node.js + Express + PostgreSQL + Redis)",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "dev": "nodemon --ignore redis_polyfill.json app.js",
+    "start": "node app.js",
+    "migrate": "node db/runMigrations.js"
   },
   "keywords": [
     "trimind",

@@ -2,6 +2,7 @@ import { validationResult } from 'express-validator';
 import { query } from '../db/index.js';
 import redisClient from '../db/redis.js';
 import { sendSuccess, sendError } from '../utils/response.js';
+import rewardService from '../services/reward.service.js';
 
 const QUIZ_TTL = 2 * 60 * 60;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
@@ -167,6 +168,38 @@ export const endQuiz = async (req, res) => {
     `SELECT * FROM quiz_answers WHERE session_id = $1 ORDER BY asked_at`,
     [sessionId]
   );
+
+  // Award XP for completing quiz
+  try {
+    const xpAmount = Math.round(score / 2); // 1 XP per 2% score
+    if (xpAmount > 0) {
+      await rewardService.awardXP(
+        req.user.id,
+        xpAmount,
+        'quiz',
+        sessionId,
+        `Completed quiz with ${score}% score`
+      );
+    }
+
+    // Update streak
+    await rewardService.updateStreak(req.user.id);
+
+    // Check for achievements
+    const quizCountResult = await query(
+      `SELECT COUNT(*) as count FROM quiz_sessions WHERE user_id = $1 AND completed_at IS NOT NULL`,
+      [req.user.id]
+    );
+    const quizCount = parseInt(quizCountResult.rows[0].count);
+
+    await rewardService.checkAchievements(req.user.id, 'study', {
+      quizScore: score,
+      quizCount: quizCount,
+    });
+  } catch (rewardError) {
+    console.error('Error processing rewards:', rewardError);
+    // Don't fail the request if reward processing fails
+  }
 
   return sendSuccess(res, {
     session: rows[0],

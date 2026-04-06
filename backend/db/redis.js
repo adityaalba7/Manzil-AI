@@ -31,6 +31,8 @@ const store = loadStore();
 const redisClient = {
   connect: async () => console.log('✅ Redis polyfill (File-System Persisted) connected'),
   on: (event, handler) => { /* Dummy */ },
+
+  // ── String ops ──
   get: async (key) => {
     const item = store.get(key);
     if (!item) return null;
@@ -55,7 +57,42 @@ const redisClient = {
     store.delete(key);
     saveStore(store);
     return 1;
-  }
+  },
+
+  // ── List ops (for salary chat history etc.) ──
+  rPush: async (key, ...values) => {
+    const item = store.get(key);
+    const list = (item && Array.isArray(item.value)) ? item.value : [];
+    for (const v of values) list.push(v);
+    store.set(key, { value: list, expiresAt: item?.expiresAt });
+    saveStore(store);
+    return list.length;
+  },
+  lRange: async (key, start, stop) => {
+    const item = store.get(key);
+    if (!item || !Array.isArray(item.value)) return [];
+    const list = item.value;
+    const end = stop === -1 ? list.length : stop + 1;
+    return list.slice(start, end);
+  },
+  lTrim: async (key, start, stop) => {
+    const item = store.get(key);
+    if (!item || !Array.isArray(item.value)) return 'OK';
+    const list = item.value;
+    const end = stop === -1 ? list.length : stop + 1;
+    store.set(key, { value: list.slice(start, end), expiresAt: item?.expiresAt });
+    saveStore(store);
+    return 'OK';
+  },
+
+  // ── Expiry ──
+  expire: async (key, seconds) => {
+    const item = store.get(key);
+    if (!item) return 0;
+    store.set(key, { ...item, expiresAt: Date.now() + seconds * 1000 });
+    saveStore(store);
+    return 1;
+  },
 };
 
 await redisClient.connect();

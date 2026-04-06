@@ -1,48 +1,7 @@
 import { validationResult } from 'express-validator';
 import { query } from '../db/index.js';
 import { sendSuccess, sendError } from '../utils/response.js';
-
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-const askAI = async (prompt, systemInstruction = '') => {
-  // Try Groq first (faster, higher limits for free tier)
-  if (GROQ_API_KEY) {
-    try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [
-            ...(systemInstruction ? [{ role: 'system', content: systemInstruction }] : []),
-            { role: 'user', content: prompt },
-          ],
-          temperature: 0.7,
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        const text = data.choices?.[0]?.message?.content?.trim();
-        if (text) return text;
-      }
-    } catch (e) { console.error('[Groq fallthrough]', e.message); }
-  }
-  // Fallback to Gemini
-  if (GEMINI_API_KEY) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-    const body = { contents: [{ parts: [{ text: prompt }] }] };
-    if (systemInstruction) body.systemInstruction = { parts: [{ text: systemInstruction }] };
-    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    if (!response.ok) throw new Error(`Gemini API ${response.status}`);
-    const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
-  }
-  throw new Error('No AI provider available');
-};
+import { askAI } from '../utils/ai.js';
 
 const checkValidation = (req, res) => {
   const errors = validationResult(req);
@@ -280,8 +239,7 @@ export const parseSms = async (req, res) => {
     return sendError(res, 'NOT_AN_EXPENSE', 'This is a credit SMS (money received). Please paste a debit/payment SMS to log an expense.', 400);
   }
 
-  // ── Regex amount extraction — no AI, no hallucination ────────────────────
-  // Handles: "INR 100.00", "Rs.240", "₹240", "Rs 57000", "INR1,234.56"
+
   const amountMatch = sms_text.match(/(?:INR|Rs\.?|₹)\s*([\d,]+(?:\.\d{1,2})?)/i);
   const amount_paise = amountMatch
     ? Math.round(parseFloat(amountMatch[1].replace(/,/g, '')) * 100)
