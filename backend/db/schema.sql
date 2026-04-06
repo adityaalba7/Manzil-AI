@@ -45,3 +45,48 @@ CREATE TABLE IF NOT EXISTS savings_goals (
 );
 
 CREATE INDEX IF NOT EXISTS idx_savings_goals_user_id ON savings_goals(user_id);
+
+CREATE TABLE IF NOT EXISTS study_uploads (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  file_name       VARCHAR(255),
+  s3_key          TEXT,
+  file_type       VARCHAR(20) CHECK (file_type IN ('pdf', 'image', 'text')),
+  processed       BOOLEAN DEFAULT FALSE,
+  flashcards_json JSONB,
+  summary_text    TEXT,
+  mindmap_json    JSONB,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_study_uploads_user_id ON study_uploads(user_id);
+
+CREATE TABLE IF NOT EXISTS quiz_sessions (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id             UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  source_type         VARCHAR(30) CHECK (source_type IN ('pdf', 'youtube', 'text', 'topic')),
+  source_ref          TEXT,
+  subject             VARCHAR(100),
+  total_questions     SMALLINT,
+  score               SMALLINT DEFAULT 0,
+  difficulty          VARCHAR(10) DEFAULT 'medium',
+  time_taken_seconds  INTEGER,
+  completed_at        TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_quiz_sessions_user_id ON quiz_sessions(user_id);
+
+CREATE TABLE IF NOT EXISTS quiz_answers (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id        UUID NOT NULL REFERENCES quiz_sessions(id) ON DELETE CASCADE,
+  question_text     TEXT NOT NULL,
+  correct_answer    TEXT NOT NULL,
+  user_answer       TEXT,
+  is_correct        BOOLEAN,
+  concept_tag       VARCHAR(100),
+  spaced_rep_due_at TIMESTAMPTZ,
+  asked_at          TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_quiz_answers_session_id ON quiz_answers(session_id);
+CREATE INDEX IF NOT EXISTS idx_quiz_answers_spaced_rep ON quiz_answers(spaced_rep_due_at);
