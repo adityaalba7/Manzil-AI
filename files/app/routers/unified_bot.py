@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import httpx
 from app.utils.llm_client import ask_llm
+from app.config import settings
 
 router = APIRouter()
 
