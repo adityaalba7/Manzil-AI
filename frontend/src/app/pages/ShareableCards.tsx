@@ -10,7 +10,7 @@ const shareables = [
       <div className="w-full aspect-[9/16] bg-[#1A1D2E] rounded-xl flex flex-col items-center justify-center p-6 relative overflow-hidden border border-[#2A2E45] shadow-lg">
         <Flame className="w-12 h-12 text-saffron mb-6 opacity-80" />
         <p className="text-white/90 font-serif italic text-center text-lg leading-relaxed mb-8">"Another Uber? Your legs work fine, Aditya. You're not the CEO of Reliance yet."</p>
-        <div className="text-saffron font-bold font-mono tracking-widest uppercase text-xs">@TriMind_AI</div>
+        <div className="text-saffron font-bold font-mono tracking-widest uppercase text-xs">@Manzil_AI</div>
       </div>
     )
   },
@@ -31,7 +31,7 @@ const shareables = [
           <div className="flex justify-between text-sm font-bold border-b border-[#E8E6DF] pb-2"><span className="text-[#141417]">Operating Sys</span><span className="text-[#141417]/60">65%</span></div>
           <div className="flex justify-between text-sm font-bold border-b border-[#E8E6DF] pb-2"><span className="text-[#141417]">Algorithms</span><span className="text-[#0EA882]">88%</span></div>
         </div>
-        <div className="mt-auto text-[#6B6B78] font-bold font-mono tracking-widest uppercase text-[10px]">@TriMind_AI</div>
+        <div className="mt-auto text-[#6B6B78] font-bold font-mono tracking-widest uppercase text-[10px]">@Manzil_AI</div>
       </div>
     )
   },
@@ -60,7 +60,7 @@ const shareables = [
         </div>
         <h3 className="font-heading font-bold text-2xl text-text-primary mb-2">Top 18%</h3>
         <p className="text-text-secondary font-medium text-sm text-center px-4">Aditya is crushing it across Academic, Finance, and Interviews.</p>
-        <div className="mt-auto text-text-secondary font-bold font-mono tracking-widest uppercase text-[10px]">@TriMind_AI</div>
+        <div className="mt-auto text-text-secondary font-bold font-mono tracking-widest uppercase text-[10px]">@Manzil_AI</div>
       </div>
     )
   },
@@ -91,8 +91,8 @@ const shareables = [
         </div>
 
         <div className="w-full flex justify-between items-center text-white/80">
-          <span className="font-bold text-sm">#TriMindWrap</span>
-          <span className="font-mono tracking-widest text-[10px] uppercase">@TriMind_AI</span>
+          <span className="font-bold text-sm">#ManzilWrap</span>
+          <span className="font-mono tracking-widest text-[10px] uppercase">@Manzil_AI</span>
         </div>
       </div>
     )

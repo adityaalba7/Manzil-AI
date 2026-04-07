@@ -34,7 +34,7 @@ function ArcGauge({ value, max, label }: { value: number, max: number, label: st
 
   return (
     <Card className="p-8 w-full flex flex-col items-center justify-center bg-surface relative overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border-none">
-      <h2 className="text-center font-heading text-text-primary text-lg font-bold tracking-wide mb-6">TriMind Life Score</h2>
+      <h2 className="text-center font-heading text-text-primary text-lg font-bold tracking-wide mb-6">Manzil Life Score</h2>
       
       <div className="relative flex flex-col items-center justify-center w-[280px] h-[280px] mx-auto mb-2">
         <svg className="w-full h-full absolute top-0 left-0 overflow-visible" viewBox="0 0 280 280">

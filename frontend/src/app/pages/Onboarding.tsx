@@ -1,5 +1,6 @@
 import { Card } from "../components/ui/card";
-import { BookOpen, IndianRupee, Video, ArrowRight, Triangle } from "lucide-react";
+import { BookOpen, IndianRupee, Video, ArrowRight } from "lucide-react";
+import logo from "../../assets/logo.png";
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -18,8 +19,8 @@ export default function Onboarding() {
       <div className="w-full max-w-4xl relative z-10 flex flex-col items-center">
         
         <div className="flex items-center gap-2 mb-12">
-          <Triangle className="w-8 h-8 text-text-primary fill-text-primary" />
-          <span className="font-heading font-bold text-xl tracking-wide text-text-primary">TriMind</span>
+          <img src={logo} alt="Manzil AI" className="w-10 h-10 object-contain" />
+          <span className="font-heading font-bold text-xl tracking-wide text-text-primary">Manzil AI</span>
         </div>
 
         <AnimatePresence mode="wait">
@@ -178,10 +179,10 @@ export default function Onboarding() {
               </Card>
 
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/app')}
                 className="flex items-center gap-2 bg-violet text-surface font-medium px-8 py-3.5 rounded-xl text-sm hover:bg-violet/90 transition-colors shadow-sm"
               >
-                Launch TriMind
+                Launch Manzil AI
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
