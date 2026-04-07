@@ -63,9 +63,8 @@ export default function Onboarding() {
     <div className="min-h-screen bg-surface px-6 py-12 flex flex-col relative overflow-hidden items-center justify-center">
       <div className="w-full max-w-4xl relative z-10 flex flex-col items-center">
         
-        <div className="flex items-center gap-2 mb-12">
-          <img src={logo} alt="Manzil AI" className="w-10 h-10 object-contain" />
-          <span className="font-heading font-bold text-xl tracking-wide text-text-primary">Manzil AI</span>
+        <div className="flex items-center justify-center mb-12 w-full">
+          <span className="font-display font-bold text-6xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-indigo-400">Manzil AI</span>
         </div>
 
         <AnimatePresence mode="wait">

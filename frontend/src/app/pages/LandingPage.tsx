@@ -15,20 +15,22 @@ import {
 
 import { motion, AnimatePresence } from "motion/react";
 
+import { ThemeToggle } from "../components/ThemeToggle";
+
 // ─── Design tokens ────────────────────────────────────────────
 const C = {
-  bg: "#F7F6F2",
-  surface: "#FFFFFF",
-  elevated: "#F0EFF8",
-  sidebar: "#1A1D2E",
-  emerald: "#0EA882",
-  saffron: "#E8620A",
-  violet: "#5B47E0",
-  rose: "#D93B3B",
-  textPrimary: "#141417",
-  textSecondary: "#6B6B78",
-  textTertiary: "#A8A8B3",
-  border: "#E8E6DF",
+  bg: "var(--bg-main)",
+  surface: "var(--bg-surface)",
+  elevated: "var(--bg-elevated)",
+  sidebar: "var(--bg-sidebar)",
+  emerald: "var(--c-emerald)",
+  saffron: "var(--c-saffron)",
+  violet: "var(--c-violet)",
+  rose: "var(--c-rose)",
+  textPrimary: "var(--text-primary)",
+  textSecondary: "var(--text-secondary)",
+  textTertiary: "var(--text-tertiary)",
+  border: "var(--border-default)",
 };
 
 const cardStyle: React.CSSProperties = {
@@ -118,15 +120,23 @@ function Navbar() {
   const alreadyLoggedIn = !!localStorage.getItem('access_token');
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10" style={{ backgroundColor: C.sidebar, borderBottom: "1px solid rgba(255,255,255,0.06)", height: 68 }}>
-        <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <img src={logo} alt="Manzil AI Logo" className="w-8 h-8 object-contain" />
-          <span className="font-heading font-bold text-white text-xl tracking-wide">Manzil AI</span>
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10" style={{ backgroundColor: C.sidebar, borderBottom: "1px solid rgba(255,255,255,0.06)", height: 100 }}>
+        <Link to="/" className="flex items-center gap-5 shrink-0 group">
+          <img 
+            src={logo} 
+            alt="Manzil AI Logo" 
+            className="w-[100px] h-[100px] object-contain transition-transform group-hover:scale-105" 
+            style={{ filter: "invert(1) hue-rotate(180deg) contrast(1.2)", mixBlendMode: "screen" }}
+          />
+          <span className="font-display font-bold text-4xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-indigo-400">
+            Manzil AI
+          </span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map(l => <a key={l.label} href={l.href} className="text-[#9CA3AF] hover:text-white text-sm font-medium transition-colors">{l.label}</a>)}
         </nav>
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
           {alreadyLoggedIn ? (
             <Link to="/app" className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors" style={{ backgroundColor: C.violet }}>Go to Dashboard →</Link>
           ) : (

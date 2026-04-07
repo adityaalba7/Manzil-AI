@@ -29,9 +29,9 @@ export function Sidebar({ mobileOpen, setMobileOpen, userName }: { mobileOpen: b
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-sidebar-bg">
-      <div className="h-20 flex items-center px-6">
-        <img src={logo} alt="Manzil AI" className="w-8 h-8 object-contain" />
-        <span className="ml-3 font-heading font-bold text-white text-xl tracking-wide lg:block md:hidden block">Manzil AI</span>
+      <div className="h-28 flex items-center px-4">
+        <img src={logo} alt="Manzil AI" className="w-[76px] h-[76px] object-contain shrink-0" style={{ filter: "invert(1) hue-rotate(180deg) contrast(1.2)", mixBlendMode: "screen" }} />
+        <span className="ml-[4px] mt-1 leading-none font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-indigo-400 text-[26px] tracking-wide whitespace-nowrap lg:flex md:hidden flex items-center">Manzil AI</span>
         <button className="md:hidden ml-auto p-2" onClick={() => setMobileOpen(false)}>
           <X className="w-5 h-5 text-[#6B7080]" />
         </button>
