@@ -118,6 +118,7 @@ export const getDashboard = async (req, res) => {
     finance: {
       budget_used_percent: budgetUsedPercent,
       predicted_balance_paise: predictedBalance,
+      remaining_balance_paise: monthlyBudget - totalSpent,
       top_category: topCategoryResult.rows[0] ?? null,
     },
     interview: {

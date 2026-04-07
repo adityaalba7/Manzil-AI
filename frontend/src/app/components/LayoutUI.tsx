@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router";
-import { Home, BookOpen, IndianRupee, Video, User, Bell, Menu, X, Trophy, Sparkles, Share } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Home, BookOpen, IndianRupee, Video, User, Bell, Menu, X, Trophy, Sparkles, Share, LogOut } from "lucide-react";
 import logo from "../../assets/logo.png";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { logout } from "../../lib/auth";
 
 const tabs = [
   { name: "Home", path: "/app", icon: Home, accent: "border-text-primary text-text-primary", bgHover: "hover:bg-white/5", activeBg: "bg-white/5" },
@@ -19,6 +20,12 @@ const tabs = [
 export function Sidebar({ mobileOpen, setMobileOpen, userName }: { mobileOpen: boolean, setMobileOpen: (v: boolean) => void, userName?: string }) {
   const location = useLocation();
   const path = location.pathname;
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-sidebar-bg">
@@ -54,14 +61,21 @@ export function Sidebar({ mobileOpen, setMobileOpen, userName }: { mobileOpen: b
       </nav>
       
       <div className="p-4 border-t border-white/10">
-        <div className="flex items-center px-2 lg:justify-start md:justify-center justify-start">
+        <div className="flex items-center px-2 lg:justify-start md:justify-center justify-start group">
           <div className="w-9 h-9 rounded-full bg-emerald/20 flex items-center justify-center overflow-hidden shrink-0">
              <span className="text-emerald font-bold text-sm">{(userName || 'U')[0].toUpperCase()}</span>
           </div>
-          <div className="ml-3 lg:block md:hidden block">
-            <div className="text-sm font-medium text-[#E8E6DF]">{userName || 'User'}</div>
+          <div className="ml-3 lg:block md:hidden block flex-1">
+            <div className="text-sm font-medium text-[#E8E6DF] truncate">{userName || 'User'}</div>
             <div className="text-[11px] text-emerald font-semibold uppercase tracking-wider">Pro Plan</div>
           </div>
+          <button 
+            onClick={handleLogout}
+            className="ml-auto p-1.5 text-[#6B7080] hover:text-rose hover:bg-rose/10 rounded-md transition-colors lg:block md:hidden block"
+            title="Log Out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>
@@ -100,7 +114,7 @@ export function Sidebar({ mobileOpen, setMobileOpen, userName }: { mobileOpen: b
 
 import { ThemeToggle } from './ThemeToggle';
 
-export function TopBar({ greeting = "Good morning, Aditya", onMenuClick }: { greeting?: string, onMenuClick: () => void }) {
+export function TopBar({ greeting = "Good morning, Aditya", onMenuClick, userName }: { greeting?: string, onMenuClick: () => void, userName?: string }) {
   const location = useLocation();
   const path = location.pathname;
   const currentTab = tabs.find(t => t.path === path) || tabs[0];
@@ -126,13 +140,12 @@ export function TopBar({ greeting = "Good morning, Aditya", onMenuClick }: { gre
         <span className="hidden sm:block text-text-secondary text-sm font-medium">{currentDate}</span>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <button className="relative p-2 text-text-secondary hover:text-text-primary hover:bg-elevated rounded-full transition-colors">
-            <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-saffron rounded-full border-2 border-primary-bg" />
+          <button onClick={() => alert('No new notifications')} className="relative p-2 text-text-secondary hover:text-text-primary hover:bg-elevated rounded-full transition-colors" title="Notifications">
             <Bell className="w-5 h-5" />
           </button>
-          <div className="w-10 h-10 rounded-full bg-surface shadow-sm border border-border-default flex items-center justify-center overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=100&auto=format&fit=crop" alt="Avatar" className="w-full h-full object-cover" />
-          </div>
+          <Link to="/app/profile" className="w-10 h-10 rounded-full bg-emerald/20 shadow-sm border border-border-default flex items-center justify-center overflow-hidden hover:bg-emerald/30 transition-colors">
+            <span className="text-emerald font-bold text-sm">{(userName || 'U')[0].toUpperCase()}</span>
+          </Link>
         </div>
       </div>
     </div>

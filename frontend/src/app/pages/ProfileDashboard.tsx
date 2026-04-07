@@ -323,12 +323,16 @@ export default function ProfileDashboard() {
       {/* Profile Header */}
       <Card className="flex flex-col md:flex-row items-center md:items-start gap-8 bg-surface p-8 relative overflow-hidden border-border-default border-t-[3px] border-t-violet">
         <div className="relative shrink-0 z-10">
-          <div className="w-24 h-24 rounded-full bg-surface border border-border-default overflow-hidden shadow-sm">
-            <img
-              src={profileData?.github?.data?.profile?.avatar_url || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=150&auto=format&fit=crop"}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
+          <div className="w-24 h-24 rounded-full bg-surface border border-border-default flex items-center justify-center overflow-hidden shadow-sm">
+            {profileData?.github?.data?.profile?.avatar_url ? (
+              <img
+                src={profileData.github.data.profile.avatar_url}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-emerald font-bold text-4xl">{(userData?.name || 'U')[0].toUpperCase()}</span>
+            )}
           </div>
           <div className="absolute -bottom-2 -right-2 bg-saffron text-surface font-mono text-sm font-bold w-10 h-10 rounded-full flex items-center justify-center border-[3px] border-surface shadow-sm z-20">
             {level}

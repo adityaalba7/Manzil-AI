@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { UserContext, User } from "../../lib/userContext";
 import api from "../../lib/api";
 import AuthGuard from "./AuthGuard";
+import TriMindBot from "./TriMindBot";
 
 export default function RootLayout() {
   const location = useLocation();
@@ -41,7 +42,7 @@ export default function RootLayout() {
           
           <div className="flex-1 flex flex-col min-w-0 md:ml-[56px] lg:ml-[240px] transition-all duration-300">
             <div className="w-full max-w-[1160px] mx-auto flex-1 px-6 sm:px-10 py-8">
-              <TopBar greeting={greeting} onMenuClick={() => setMobileOpen(true)} />
+              <TopBar greeting={greeting} onMenuClick={() => setMobileOpen(true)} userName={user?.name} />
               <AnimatePresence mode="wait">
                 <motion.div
                   key={location.pathname}
@@ -56,6 +57,7 @@ export default function RootLayout() {
             </div>
           </div>
         </div>
+        <TriMindBot />
       </UserContext.Provider>
     </AuthGuard>
   );

@@ -29,6 +29,7 @@ export default function FinanceDashboard() {
   const [expenseText, setExpenseText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('food');
   const [isLogging, setIsLogging] = useState(false);
+  const [isRecordingVoice, setIsRecordingVoice] = useState(false);
 
   // SMS
   const [smsText, setSmsText] = useState('');
@@ -95,23 +96,24 @@ export default function FinanceDashboard() {
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
-  const handleLogExpense = async () => {
-    if (!expenseText.trim()) return;
+  const handleLogExpense = async (overrideText?: string) => {
+    const textToLog = (overrideText || expenseText).trim();
+    if (!textToLog) return;
     setIsLogging(true);
     try {
       // Parse amount from text like "240", "₹240", "paid 240 for lunch"
-      const amountMatch = expenseText.match(/₹?\s*(\d+)/);
+      const amountMatch = textToLog.match(/₹?\s*(\d+)/);
       const amount = amountMatch ? parseInt(amountMatch[1]) : 0;
       if (amount <= 0) { alert('Could not detect amount. Try: "240 for lunch"'); setIsLogging(false); return; }
 
       // Extract note (everything except the amount part)
-      const note = expenseText.replace(/₹?\s*\d+/, '').replace(/^[\s,for-]+/, '').trim();
+      const note = textToLog.replace(/₹?\s*\d+/, '').replace(/^[\s,for-]+/, '').trim();
 
       await logExpense({
         amount_paise: amount * 100,
         category: selectedCategory,
         note: note || undefined,
-        source: 'manual',
+        source: overrideText ? 'voice' : 'manual',
       });
       setExpenseText('');
       fetchAll();
@@ -121,6 +123,40 @@ export default function FinanceDashboard() {
     }
     setIsLogging(false);
   };
+
+  const handleVoiceLog = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice recognition not supported in this browser. Please type your expense.');
+      return;
+    }
+    
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.interimResults = false;
+    
+    recognition.onstart = () => {
+      setIsRecordingVoice(true);
+    };
+    
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setExpenseText(transcript);
+      handleLogExpense(transcript);
+    };
+
+    recognition.onerror = (e: any) => {
+      console.error("Speech recognition error", e);
+      alert("Could not hear you properly. Try again.");
+    };
+
+    recognition.onend = () => {
+      setIsRecordingVoice(false);
+    };
+
+    recognition.start();
+  };
+
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this expense?')) return;
@@ -281,10 +317,13 @@ export default function FinanceDashboard() {
           {/* Quick Log */}
           <Card className="p-6 bg-surface border border-border-default flex flex-col md:flex-row gap-6 items-center">
             <div className="flex flex-col items-center gap-3">
-              <button className="w-20 h-20 rounded-full bg-saffron text-surface flex items-center justify-center shadow-[0_4px_15px_rgba(232,98,10,0.3)] hover:scale-105 transition-transform active:scale-95">
+              <button 
+                onClick={handleVoiceLog}
+                className={`w-20 h-20 rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(232,98,10,0.3)] transition-all ${isRecordingVoice ? 'bg-rose text-white animate-pulse scale-110' : 'bg-saffron text-surface hover:scale-105 active:scale-95'}`}
+              >
                 <Mic className="w-8 h-8" />
               </button>
-              <span className="text-sm font-bold text-text-primary">Voice Log</span>
+              <span className="text-sm font-bold text-text-primary">{isRecordingVoice ? "Listening..." : "Voice Log"}</span>
             </div>
 
             <div className="flex-1 w-full border-l md:border-l-border-default md:pl-6 pt-4 md:pt-0 border-t md:border-t-0 border-border-default">
@@ -292,7 +331,7 @@ export default function FinanceDashboard() {
                 <input type="text" placeholder="Type: '240 for lunch'" value={expenseText} onChange={e => setExpenseText(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleLogExpense()}
                   className="flex-1 bg-primary-bg border border-border-default rounded-xl px-4 py-3 text-[15px] outline-none focus:border-saffron font-sans shadow-sm" />
-                <button onClick={handleLogExpense} disabled={isLogging}
+                <button onClick={() => handleLogExpense()} disabled={isLogging}
                   className="bg-saffron text-surface px-4 py-3 rounded-xl font-bold text-sm hover:bg-saffron/90 transition-colors disabled:opacity-50 flex items-center gap-2">
                   <Plus className="w-4 h-4" /> {isLogging ? '...' : 'Log'}
                 </button>

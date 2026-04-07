@@ -21,6 +21,7 @@ from app.routers import (
     monthly_wrap,
     student_twin,
     code_mentor,
+    unified_bot,
 )
 from db.database import engine, Base
 
@@ -58,6 +59,7 @@ app.include_router(sleep_study.router,        prefix="/api/sleep",         tags=
 app.include_router(monthly_wrap.router,       prefix="/api/monthly-wrap",  tags=["Monthly Wrap"])
 app.include_router(student_twin.router,       prefix="/api/student-twin",  tags=["Student Twin Match"])
 app.include_router(code_mentor.router,        prefix="/api/code",          tags=["Code Mentor"])
+app.include_router(unified_bot.router,       prefix="/api/chatbot",       tags=["Unified Chatbot"])
 
 @app.get("/")
 def root():

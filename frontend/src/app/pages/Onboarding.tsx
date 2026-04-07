@@ -22,7 +22,7 @@ export default function Onboarding() {
   
   useEffect(() => {
     if (alreadyLoggedIn) {
-      navigate('/', { replace: true });
+      navigate('/app', { replace: true });
     }
   }, [alreadyLoggedIn, navigate]);
 
@@ -50,7 +50,7 @@ export default function Onboarding() {
           password: formData.password,
         });
       }
-      navigate('/');
+      navigate('/app');
     } catch (err: any) {
       const msg = err.response?.data?.message || err.response?.data?.error?.message;
       setError(msg || (authMode === 'signup' ? "Registration failed. Try again." : "Invalid email or password."));

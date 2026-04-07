@@ -6,7 +6,7 @@ import {
   MessageSquare, Moon, Mic, Smartphone, TrendingDown, Target,
   BarChart2, FileText, Activity, Phone, Search, Award, Globe,
   Share2, Lock, Shield, RefreshCw, Trophy, Users, Mail,
-  Instagram, Linkedin, MapPin
+  Instagram, Linkedin, MapPin, Flame, Briefcase, Calendar
 } from "lucide-react";
 import logo from "../../assets/logo.png";
 import {
@@ -115,6 +115,7 @@ const NAV_LINKS = [
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const alreadyLoggedIn = !!localStorage.getItem('access_token');
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10" style={{ backgroundColor: C.sidebar, borderBottom: "1px solid rgba(255,255,255,0.06)", height: 68 }}>
@@ -126,8 +127,14 @@ function Navbar() {
           {NAV_LINKS.map(l => <a key={l.label} href={l.href} className="text-[#9CA3AF] hover:text-white text-sm font-medium transition-colors">{l.label}</a>)}
         </nav>
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/onboarding" className="border border-white/20 text-white/80 hover:text-white hover:border-white/40 px-4 py-2 rounded-lg text-sm font-medium transition-all">Log in</Link>
-          <Link to="/onboarding" className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors" style={{ backgroundColor: C.violet }}>Get Started Free →</Link>
+          {alreadyLoggedIn ? (
+            <Link to="/app" className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors" style={{ backgroundColor: C.violet }}>Go to Dashboard →</Link>
+          ) : (
+            <>
+              <Link to="/onboarding" className="border border-white/20 text-white/80 hover:text-white hover:border-white/40 px-4 py-2 rounded-lg text-sm font-medium transition-all">Log in</Link>
+              <Link to="/onboarding" className="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-colors" style={{ backgroundColor: C.violet }}>Get Started Free →</Link>
+            </>
+          )}
         </div>
         <button className="md:hidden text-white p-2" onClick={() => setOpen(true)}><Menu className="w-6 h-6" /></button>
       </header>
@@ -146,8 +153,14 @@ function Navbar() {
                 <motion.a key={l.label} href={l.href} onClick={() => setOpen(false)} className="text-[#9CA3AF] hover:text-white text-2xl font-heading font-medium transition-colors" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}>{l.label}</motion.a>
               ))}
               <div className="flex flex-col items-center gap-4 mt-4">
-                <Link to="/onboarding" onClick={() => setOpen(false)} className="border border-white/20 text-white/80 hover:text-white px-8 py-3 rounded-lg text-base font-medium transition-all">Log in</Link>
-                <Link to="/onboarding" onClick={() => setOpen(false)} className="px-8 py-3 rounded-lg text-base font-semibold text-white" style={{ backgroundColor: C.violet }}>Get Started Free →</Link>
+                {alreadyLoggedIn ? (
+                  <Link to="/app" onClick={() => setOpen(false)} className="px-8 py-3 rounded-lg text-base font-semibold text-white" style={{ backgroundColor: C.violet }}>Go to Dashboard →</Link>
+                ) : (
+                  <>
+                    <Link to="/onboarding" onClick={() => setOpen(false)} className="border border-white/20 text-white/80 hover:text-white px-8 py-3 rounded-lg text-base font-medium transition-all">Log in</Link>
+                    <Link to="/onboarding" onClick={() => setOpen(false)} className="px-8 py-3 rounded-lg text-base font-semibold text-white" style={{ backgroundColor: C.violet }}>Get Started Free →</Link>
+                  </>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -276,20 +289,20 @@ function HowItWorks() {
     {
       color: C.emerald, icon: <BookOpen className="w-8 h-8" style={{ color: C.emerald }} />,
       title: "Study smarter, not harder",
-      desc: "AI-powered tools that know your weak spots, build your schedule, and quiz you exactly where you need it.",
-      features: ["Radar chart of subject strengths", "AI Pomodoro study planner", "Quiz from YouTube links", "Panic mode for last-minute prep", "Concept mind map generator", "Predict your exam score"],
+      desc: "AI-powered tools that adapt to your retention, summarize lectures, and quiz you exactly where you need it.",
+      features: ["Spaced Repetition Engine", "Lecture Audio to Notes", "Smart PDF Summarizer", "Code Mentor", "Weak Topic Radar Chart", "Study Streaks"],
     },
     {
       color: C.saffron, icon: <IndianRupee className="w-8 h-8" style={{ color: C.saffron }} />,
       title: "Own your money",
-      desc: "Voice-log expenses in Hindi, auto-import UPI SMS, and let AI show you exactly where your money is going.",
-      features: ["Voice logging in Hinglish", "UPI SMS auto-import", "Real-time spending donut", "Impulse buy detector", "Month-end balance predictor", "AI budget roast card"],
+      desc: "Easily track expenses, set countdowns for dream purchases, and get brutally roasted by AI on your spending habits.",
+      features: ["Real-time spending donut", "Savings Goal Countdown", "AI Budget Roast", "Category Budgeting", "Expense History", "CGPA to Package Estimator"],
     },
     {
       color: C.violet, icon: <Video className="w-8 h-8" style={{ color: C.violet }} />,
       title: "Walk in confident",
-      desc: "Live AI mock interviews, filler word detection, and a salary negotiation coach that preps you for the real thing.",
-      features: ["Live AI interview simulator", "Filler word detector", "STAR method coach", "Salary negotiation roleplay", "Job description analyzer", "Simulated HR phone call"],
+      desc: "Live AI mock interviews, resume gap analysis, and tailored scholarship finding to prep you for the real thing.",
+      features: ["Live AI interview simulator", "Resume Gap Detector", "Roast My Resume", "Scholarship Radar", "Weekly Mock Sessions", "Performance History"],
     },
   ];
 
@@ -383,29 +396,23 @@ function ScoreSection() {
 function FeaturesGrid() {
   const features = [
     // Emerald (Study)
-    { icon: <Brain />, color: C.emerald, title: "Smart Notes Summarizer", desc: "Upload PDF → flashcards + 1-page summary" },
-    { icon: <Play />, color: C.emerald, title: "Quiz from YouTube", desc: "Paste any lecture link → AI generates quiz" },
-    { icon: <Zap />, color: C.emerald, title: "Panic Mode", desc: "10 rapid-fire questions in 60 seconds" },
-    { icon: <Compass />, color: C.emerald, title: "Learning Quest Map", desc: "RPG-style topic dungeons, unlock as you learn" },
-    { icon: <MessageSquare />, color: C.emerald, title: "Debate Mode", desc: "AI argues the other side, you defend yours" },
-    { icon: <Moon />, color: C.emerald, title: "Night Owl Scheduler", desc: "AI schedules hard topics during your peak focus hours" },
+    { icon: <Mic />, color: C.emerald, title: "Lecture Recorder", desc: "Record 10 mins → get notes + quiz" },
+    { icon: <FileText />, color: C.emerald, title: "Smart Notes", desc: "Upload PDF → flashcards + summary" },
+    { icon: <RefreshCw />, color: C.emerald, title: "Spaced Repetition", desc: "AI re-asks your wrong answers later" },
+    { icon: <MessageSquare />, color: C.emerald, title: "Code Mentor", desc: "Paste broken code → AI explains fixes" },
     // Saffron (Finance)
-    { icon: <Mic />, color: C.saffron, title: "Voice Logging in Hindi", desc: "Say it in Hinglish, AI logs it instantly" },
-    { icon: <Smartphone />, color: C.saffron, title: "UPI SMS Parser", desc: "Paste GPay SMS → expenses auto-logged" },
-    { icon: <TrendingDown />, color: C.saffron, title: "Impulse Buy Detector", desc: "AI nudges you before a big non-essential spend" },
-    { icon: <Target />, color: C.saffron, title: "Dream Purchase Countdown", desc: "Daily save target + progress bar to your goal" },
-    { icon: <BarChart2 />, color: C.saffron, title: "Chai Latte Effect", desc: "See the 10-year cost of your daily ₹50 chai" },
-    { icon: <FileText />, color: C.saffron, title: "AI Budget Roast", desc: "Weekly savage-but-funny spending feedback" },
-    // Violet (Interview)
-    { icon: <Video />, color: C.violet, title: "Live AI Simulator", desc: "Real-time keyword scoring as you answer" },
-    { icon: <Activity />, color: C.violet, title: "Filler Word Detector", desc: "Counts your 'um', 'like', 'basically'" },
-    { icon: <Star />, color: C.violet, title: "STAR Coach", desc: "Structures messy answers into perfect STAR format" },
-    { icon: <Phone />, color: C.violet, title: "HR Call Simulation", desc: "AI plays an Infosys HR, you answer live" },
-    { icon: <Search />, color: C.violet, title: "JD Analyzer", desc: "Paste JD → skill gap analysis → 7-day plan" },
-    { icon: <Award />, color: C.violet, title: "Salary Negotiation", desc: "Roleplay counter-offers with AI coaching whispers" },
-    // Grey (Platform)
-    { icon: <Globe />, color: C.textTertiary, title: "Offline Mode", desc: "Works without internet, syncs when connected" },
-    { icon: <Share2 />, color: C.textTertiary, title: "Shareable Score Card", desc: "Share your Manzil score as an Instagram story" },
+    { icon: <IndianRupee />, color: C.saffron, title: "CGPA Estimator", desc: "Enter CGPA + tier → likely package" },
+    { icon: <Target />, color: C.saffron, title: "Savings Goals", desc: "Daily save target + progress bar" },
+    { icon: <BarChart2 />, color: C.saffron, title: "Expense Tracking", desc: "See where your money goes instantly" },
+    { icon: <Flame />, color: C.saffron, title: "AI Budget Roast", desc: "Weekly savage spending feedback" },
+    // Violet (Interview & Career)
+    { icon: <Video />, color: C.violet, title: "Mock Interviews", desc: "Real-time mock interview simulator" },
+    { icon: <Briefcase />, color: C.violet, title: "Resume Gap Detector", desc: "Upload resume → find missing skills" },
+    { icon: <Star />, color: C.violet, title: "Roast My Resume", desc: "Actionable AI feedback on your CV" },
+    { icon: <Search />, color: C.violet, title: "Scholarship Radar", desc: "Find scholarships based on your profile" },
+    // Platform
+    { icon: <Calendar />, color: C.textTertiary, title: "Monthly Wrap", desc: "Spotify-style monthly shareable recap" },
+    { icon: <Share2 />, color: C.textTertiary, title: "Shareable Cards", desc: "Instantly share scores on WhatsApp" },
   ];
 
   return (
@@ -434,12 +441,11 @@ function FeaturesGrid() {
 // ─── SECTION 7: INDIA FIRST ──────────────────────────────────
 function IndiaFirst() {
   const list = [
-    { title: "Hinglish AI tutor", desc: "Explains recursion like your senior, not a textbook" },
-    { title: "UPI SMS auto-import", desc: "GPay, PhonePe, Paytm — zero manual entry" },
-    { title: "Hostel / PG / Home budget profiles", desc: "Pre-configured for how Indian students actually live" },
-    { title: "GATE, JEE, UPSC modes", desc: "Question banks mapped to actual paper patterns" },
-    { title: "Offline mode", desc: "Works in Kota, Gorakhpur, and everywhere in between" },
-    { title: "WhatsApp nudge bot", desc: "Daily reminders without opening the app" },
+    { title: "CGPA to Package Estimator", desc: "Real salary ranges mapped to Indian college tiers" },
+    { title: "AI Budget Roast", desc: "Get brutally roasted for spending all your pocket money on Zomato" },
+    { title: "Indian Scholarship Radar", desc: "Find live scholarships actually relevant to Indian students" },
+    { title: "WhatsApp Shareable Cards", desc: "Instantly share your Manzil stats as an Instagram or WhatsApp story" },
+    { title: "Resume Roast", desc: "Direct, no-nonsense feedback on your ATS score before placements" },
   ];
 
   return (
@@ -465,14 +471,13 @@ function IndiaFirst() {
           <div className="w-[320px] rounded-[32px] p-4" style={{ backgroundColor: C.sidebar, boxShadow: "0 30px 80px -20px rgba(0,0,0,0.2)" }}>
             <div className="flex flex-col items-center gap-4 py-8 px-4">
               <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ backgroundColor: `${C.saffron}20`, border: `2px solid ${C.saffron}40` }}>
-                <Mic className="w-9 h-9" style={{ color: C.saffron }} />
+                <Flame className="w-9 h-9" style={{ color: C.saffron }} />
               </div>
               <div className="w-full rounded-xl p-3 mt-2" style={{ backgroundColor: "rgba(255,255,255,0.08)" }}>
-                <p className="text-sm font-sans" style={{ color: "#E8E6DF" }}>Aaj 150 rupaye chai pe kharcha kiya</p>
+                <p className="text-sm font-sans" style={{ color: "#E8E6DF" }}>AI Budget Roast</p>
               </div>
-              <div className="w-full rounded-lg p-3 flex items-center gap-3" style={{ backgroundColor: `${C.emerald}20` }}>
-                <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: C.emerald }} />
-                <span className="text-sm" style={{ color: "#E8E6DF" }}>₹150 · Food & Drinks · Today</span>
+              <div className="w-full rounded-lg p-3 flex items-center gap-3" style={{ backgroundColor: `${C.saffron}20` }}>
+                <span className="text-sm italic" style={{ color: "#E8E6DF" }}>"Another order from Swiggy? You're not the CEO of Reliance yet. Save some money for that placement suit."</span>
               </div>
             </div>
           </div>
@@ -486,72 +491,29 @@ function IndiaFirst() {
 
 // ─── SECTION 9: PRICING ──────────────────────────────────────
 function Pricing() {
-  const [yearly, setYearly] = useState(false);
-
-  const freeFeatures = ["Basic quiz generator", "Manual expense logging", "3 mock interviews/month", "Manzil Life Score", "Community leaderboard"];
-  const proFeatures = ["Everything in Free", "Unlimited mock interviews", "Voice logging in Hindi", "UPI SMS import", "AI study planner", "Panic mode", "Mind map generator", "Budget roast", "Dream purchase tracker", "Resume gap detector", "Priority AI nudge"];
-  const campusFeatures = ["Everything in Pro × all students", "College analytics dashboard", "Batch-level insights", "LMS integration", "Company-sponsored mock rounds", "Dedicated support"];
+  const freeFeatures = ["Spaced Repetition & Study Tools", "Resume & AI Mock Interviews", "CGPA & Salary Estimators", "Expense Tracking & Budgets", "Manzil Life Score", "Monthly Shareable Wrap"];
 
   return (
     <section id="pricing" style={{ backgroundColor: C.bg, padding: "80px 40px" }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <FadeUp><p className="text-xs font-semibold uppercase tracking-[0.12em] mb-4 font-heading" style={{ color: C.saffron }}>PRICING</p></FadeUp>
-        <FadeUp delay={0.1}><h2 className="font-display leading-tight" style={{ fontSize: 48, color: C.textPrimary }}>Start free. Upgrade when you're ready.</h2></FadeUp>
-        <FadeUp delay={0.15}><p className="text-[16px] mt-3" style={{ color: C.textSecondary }}>No credit card required. Cancel anytime.</p></FadeUp>
-        <FadeUp delay={0.2}>
-          <div className="flex justify-center mt-8">
-            <div className="flex gap-1 p-1 rounded-full" style={{ backgroundColor: C.surface, border: `1px solid ${C.border}` }}>
-              {["Monthly", "Yearly (Save 37%)"].map((opt, i) => {
-                const active = (i === 1) === yearly;
-                return (
-                  <button key={opt} onClick={() => setYearly(i === 1)} className="px-4 py-1.5 rounded-full text-sm font-semibold transition-all" style={{ backgroundColor: active ? C.violet : "transparent", color: active ? "#fff" : C.textSecondary }}>{opt}</button>
-                );
-              })}
-            </div>
-          </div>
-        </FadeUp>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 items-start">
-          {/* Free */}
-          <FadeUp delay={0.2}>
-            <div className="p-8" style={cardStyle}>
-              <div className="font-mono text-[40px] font-bold" style={{ color: C.textPrimary }}>₹0 <span className="text-sm font-sans font-normal" style={{ color: C.textSecondary }}>/month</span></div>
-              <h3 className="font-heading font-bold text-[18px] mt-2" style={{ color: C.textPrimary }}>Free Forever</h3>
-              <p className="text-sm mt-1" style={{ color: C.textSecondary }}>Everything you need to get started.</p>
-              <ul className="mt-6 space-y-2">{freeFeatures.map(f => <li key={f} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}><CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: C.emerald }} />{f}</li>)}</ul>
-              <Link to="/onboarding" className="w-full mt-8 py-3 rounded-xl font-semibold text-sm text-center block transition-all" style={{ border: `1px solid ${C.border}`, color: C.textPrimary }}>Get started free</Link>
-            </div>
-          </FadeUp>
-          {/* Pro */}
-          <FadeUp delay={0.3}>
+        <FadeUp delay={0.1}><h2 className="font-display leading-tight" style={{ fontSize: 48, color: C.textPrimary }}>Built by students, for students.</h2></FadeUp>
+        <FadeUp delay={0.15}><p className="text-[16px] mt-3" style={{ color: C.textSecondary }}>100% Free forever. No hidden fees. No credit card required.</p></FadeUp>
+        
+        <div className="flex justify-center mt-10">
+          <FadeUp delay={0.2} className="w-full max-w-lg">
             <div className="p-8 relative" style={{ ...cardStyle, border: `2px solid ${C.violet}`, boxShadow: `0 8px 30px -8px rgba(91,71,224,0.25)` }}>
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold text-white" style={{ backgroundColor: C.violet }}>Most Popular</span>
-              <div className="font-mono text-[40px] font-bold" style={{ color: C.violet }}>
-                {yearly ? "₹1,499" : "₹199"} <span className="text-sm font-sans font-normal" style={{ color: C.textSecondary }}>/{yearly ? "year" : "month"}</span>
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-semibold text-white" style={{ backgroundColor: C.violet }}>All Inclusive</span>
+              <div className="font-mono text-[40px] font-bold text-center" style={{ color: C.violet }}>
+                ₹0 <span className="text-sm font-sans font-normal" style={{ color: C.textSecondary }}>/month</span>
               </div>
-              <h3 className="font-heading font-bold text-[18px] mt-2" style={{ color: C.textPrimary }}>Pro</h3>
-              <p className="text-sm mt-1" style={{ color: C.textSecondary }}>Full power, unlimited access.</p>
-              <ul className="mt-6 space-y-2">{proFeatures.map(f => <li key={f} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}><CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: C.violet }} />{f}</li>)}</ul>
-              <Link to="/onboarding" className="w-full mt-8 py-3 rounded-xl font-semibold text-sm text-center block text-white transition-colors" style={{ backgroundColor: C.violet }}>Start Pro free for 7 days →</Link>
-            </div>
-          </FadeUp>
-          {/* Campus */}
-          <FadeUp delay={0.4}>
-            <div className="p-8" style={cardStyle}>
-              <div className="font-heading text-[32px] font-bold" style={{ color: C.textPrimary }}>Custom</div>
-              <h3 className="font-heading font-bold text-[18px] mt-2" style={{ color: C.textPrimary }}>Campus Plan</h3>
-              <p className="text-sm mt-1" style={{ color: C.textSecondary }}>For colleges and placement cells.</p>
-              <ul className="mt-6 space-y-2">{campusFeatures.map(f => <li key={f} className="flex items-center gap-2 text-sm" style={{ color: C.textSecondary }}><CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: C.saffron }} />{f}</li>)}</ul>
-              <a href="#contact" className="w-full mt-8 py-3 rounded-xl font-semibold text-sm text-center block transition-all" style={{ border: `1px solid ${C.border}`, color: C.textPrimary }}>Contact us →</a>
+              <h3 className="font-heading font-bold text-[18px] mt-2 text-center" style={{ color: C.textPrimary }}>Community Edition</h3>
+              <p className="text-sm mt-1 text-center" style={{ color: C.textSecondary }}>Full power, unlimited access.</p>
+              <ul className="mt-6 space-y-3">{freeFeatures.map(f => <li key={f} className="flex items-center justify-center gap-2 text-sm" style={{ color: C.textSecondary }}><CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: C.violet }} />{f}</li>)}</ul>
+              <Link to="/onboarding" className="w-full mt-8 py-3 rounded-xl font-semibold text-sm text-center block text-white transition-colors" style={{ backgroundColor: C.violet }}>Get Started for Free →</Link>
             </div>
           </FadeUp>
         </div>
-        <FadeUp delay={0.5}>
-          <div className="text-center mt-8 flex items-center justify-center gap-6 flex-wrap text-sm" style={{ color: C.textSecondary }}>
-            <span className="flex items-center gap-1.5"><Lock className="w-4 h-4" /> Secure payments via Razorpay</span>
-            <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" /> Used at 200+ colleges</span>
-            <span className="flex items-center gap-1.5"><RefreshCw className="w-4 h-4" /> Cancel anytime</span>
-          </div>
-        </FadeUp>
       </div>
     </section>
   );
@@ -560,15 +522,14 @@ function Pricing() {
 // ─── SECTION 10: COMPARISON TABLE ────────────────────────────
 function ComparisonTable() {
   const rows = [
-    { feature: "AI Study Coach", manzil: true, finalRound: false, studyApp: true, budgetApp: false },
-    { feature: "Finance Tracker", manzil: true, finalRound: false, studyApp: false, budgetApp: true },
-    { feature: "Interview Prep", manzil: true, finalRound: true, studyApp: false, budgetApp: false },
-    { feature: "Cross-module AI memory", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
-    { feature: "Built for India (UPI, Hinglish, GATE)", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
+    { feature: "AI Spaced Repetition", manzil: true, finalRound: false, studyApp: true, budgetApp: false },
+    { feature: "Resume & Career Roasts", manzil: true, finalRound: true, studyApp: false, budgetApp: false },
+    { feature: "Expense & Goal Tracking", manzil: true, finalRound: false, studyApp: false, budgetApp: true },
+    { feature: "Actionable Shareable Cards", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
+    { feature: "Built for Indian Placements", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
     { feature: "Manzil Life Score", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
-    { feature: "Offline mode", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
-    { feature: "Free tier", manzil: true, finalRound: false, studyApp: true, budgetApp: true },
-    { feature: "Price for students", manzil: "₹199/mo", finalRound: "₹8,200/mo", studyApp: "₹300/mo", budgetApp: "₹0" },
+    { feature: "Unified Dashboard", manzil: true, finalRound: false, studyApp: false, budgetApp: false },
+    { feature: "Free forever", manzil: true, finalRound: false, studyApp: true, budgetApp: true },
   ];
 
   const Check = () => <CheckCircle2 className="w-5 h-5 mx-auto" style={{ color: C.emerald }} />;
@@ -618,14 +579,12 @@ function ComparisonTable() {
 // ─── SECTION 11: FAQ ─────────────────────────────────────────
 function FAQ() {
   const items = [
-    { q: "Is Manzil really free to start?", a: "Yes. The Free plan includes core quiz, basic expense logging, 3 mock interviews/month, and your Manzil Life Score. No credit card needed." },
-    { q: "How does the cross-module AI actually work?", a: "Manzil stores your study performance, spending patterns, and interview scores in a shared profile. Every morning the AI reads all three and sends you one personalized action based on all your data combined — something no single-purpose app can do." },
-    { q: "Does it work for non-engineering students?", a: "Yes. Interview domains include Marketing, Finance, HR, Product, and Data Science. The finance and study modules work for any stream." },
-    { q: "Is my financial data safe?", a: "Your data is encrypted and stored securely. We never sell or share personal data. Expense data stays on your device unless you enable sync." },
-    { q: "Does it work offline?", a: "Core features — quizzes, expense logging, study planner — work without internet. Data syncs automatically when you reconnect." },
-    { q: "Can my college use Manzil for all students?", a: "Yes — we have a Campus Plan with a placement cell analytics dashboard, batch-level insights, and LMS integration. Contact us for pricing." },
-    { q: "How is Manzil different from just using ChatGPT?", a: "ChatGPT doesn't know your exam date, your spending this month, or your quiz scores. Manzil does — and uses all three together to guide you every day." },
-    { q: "What is the Manzil Life Score based on?", a: "It combines three sub-scores: Academic Growth (quiz accuracy, study hours, topic coverage), Financial Health (budget adherence, savings rate), and Interview Readiness (mock scores, practice frequency, improvement rate). Updated daily." },
+    { q: "Is Manzil really free?", a: "Yes. The platform is entirely free right now as we build out features for the Indian student community. You get full access to spaced repetition, mock interviews, and AI budget roasts. No credit card needed." },
+    { q: "Does the AI connect my data from different modules?", a: "Manzil stores your study performance, spending patterns, and interview scores in a shared profile. This fuels the Manzil Score which gives you a high-level view of your life." },
+    { q: "Does it work for non-engineering students?", a: "Yes. The finance tools, study dashboards, and core resume feedback modules work for any stream." },
+    { q: "Is my financial data safe?", a: "Your data is encrypted and stored securely. We never sell or share personal data." },
+    { q: "How is Manzil different from just using ChatGPT?", a: "ChatGPT doesn't track your exam dates, your spending this month, or your past mock interview scores. Manzil does — and acts as a unified platform specifically for placement preparation." },
+    { q: "What is the Manzil Life Score based on?", a: "It combines your academic growth (flashcard accuracy, study streaks), financial disciple (budget adherence), and interview readiness (mock performance) into one verifiable number." },
   ];
   return (
     <section id="faq" style={{ backgroundColor: C.bg, padding: "80px 40px" }}>

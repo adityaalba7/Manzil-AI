@@ -88,3 +88,9 @@ export const requestSpacedRepetition = async (payload: any) => {
   const response = await pythonApi.post('/spaced-rep/generate', payload);
   return response.data;
 };
+
+// Unified Chatbot (Gemini-powered)
+export const requestUnifiedChat = async (message: string, history: { role: string; content: string }[], context: any) => {
+  const response = await pythonApi.post('/chatbot/chat', { message, history, context });
+  return response.data;
+};
