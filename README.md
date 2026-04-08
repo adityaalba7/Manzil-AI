@@ -234,16 +234,17 @@ This project is licensed under the ISC License.
 
 ## 👥 Team
 
-- **Hardik Agarwal** - Co-Founder
-- **Samay Parashar** - Co-Founder
-- **Aditya Jain** - Co-Founder
+- **Aditya Jain** (Team Lead & Backend Development)
+- **Samay Parashar** (Ai Integration)
+- **Hardik Agarwal** (Frontend Development)
 
 ## 📞 Contact
 
-- Email: hardikagarwal10feb@gmail.com
-- LinkedIn: [Hardik Agarwal](https://www.linkedin.com/in/hardik-agarwal-85a90a382/)
-- LinkedIn: [Samay Parashar](https://www.linkedin.com/in/samay-parashar-95833b382/)
+- Email: adityaalba27@gmail.com
 - LinkedIn: [Aditya Jain](https://www.linkedin.com/in/adityajain-dev/)
+- LinkedIn: [Samay Parashar](https://www.linkedin.com/in/samay-parashar-95833b382/)
+- LinkedIn: [Hardik Agarwal](https://www.linkedin.com/in/hardik-agarwal-85a90a382/)
+
 
 ## 🙏 Acknowledgments
 
