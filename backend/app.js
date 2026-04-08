@@ -56,7 +56,7 @@ app.use(errorHandler);
 const PORT = parseInt(process.env.PORT || '5000');
 
 app.listen(PORT, async () => {
-  console.log(`🚀 TriMind API running on http://localhost:${PORT}`);
+  console.log(` ✌️  Manzil-AI API running on http://localhost:${PORT}`);
   console.log(`   Environment : ${process.env.NODE_ENV || 'development'}`);
 
   await import('./cron/computeScores.js');
