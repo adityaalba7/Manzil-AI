@@ -1,251 +1,335 @@
-# Manzil AI - Student Life OS
+<p align="center">
+  <img src="frontend/src/assets/logo.png" alt="Manzil AI Logo" width="120" />
+</p>
 
-> Study smarter. Spend wiser. Interview better.
+<h1 align="center">Manzil AI</h1>
 
-Manzil AI is a comprehensive student productivity platform that connects your study performance, financial habits, and interview readiness into one unified AI-powered system. Built specifically for Indian college students preparing for placements.
+<p align="center">
+  <strong>Your AI-powered college companion — study smarter, spend wiser, interview sharper.</strong>
+</p>
 
-## 🌟 Features
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/FastAPI-2.0-009688?logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Gemini-AI-4285F4?logo=google&logoColor=white" alt="Gemini" />
+</p>
 
-### 📚 Study Module
-- **AI-Powered Quiz System** - Generate quizzes from PDFs, YouTube videos, or text
-- **Spaced Repetition Engine** - AI re-asks your wrong answers in disguise 3 days later
-- **Lecture Recorder** - Record 10 minutes → get notes + quiz instantly
-- **Smart Notes Summarizer** - Upload PDF → flashcards + 1-page summary
-- **Concept Mind Map** - Generate node-edge concept maps for any topic
-- **Predict My Score** - AI predicts your exam score based on quiz history
-- **Debate Mode** - Practice arguments with AI counterpoints
-- **Teach It Back** - Explain concepts and get AI feedback
-- **Night Owl Insight** - Find your peak study performance window
-- **Panic Mode** - Rapid-fire questions for last-minute revision
+---
 
-### 💰 Finance Module
-- **Expense Tracking** - Log expenses manually or via voice
-- **UPI SMS Auto-Import** - Paste UPI SMS and AI extracts expense details
-- **Savings Goals** - Set targets and track progress
-- **Month-end Prediction** - AI predicts your remaining balance
-- **AI Budget Roast** - Get savage but actionable spending feedback
-- **Chai Latte Effect** - See how small daily expenses compound over time
-- **Impulse Buy Detector** - Flag purchases above your daily average
-- **Peer Benchmark** - Compare spending with students at similar colleges
-- **Canteen Mode** - Quick-log daily meals with one tap
+## 🎯 What is Manzil AI?
 
-### 🎤 Interview Module
-- **Live AI Mock Interviews** - Real-time interview simulator with voice input
-- **Filler Word Tracker** - Detect and reduce "um", "like", "you know"
-- **Answer Quality Meter** - Real-time scoring on clarity, depth, confidence, structure
-- **Salary Negotiation Coach** - Practice salary conversations with AI
-- **JD Analyzer** - Extract skills and generate prep plans from job descriptions
-- **Mirror Mode** - Watch your body language while practicing
-- **Company-Specific Prep** - Tailored sessions for Google, Flipkart, startups
+Manzil AI is a full-stack platform built **for Indian college students** that combines three critical areas of student life into one intelligent dashboard:
 
-### 🤖 AI Tools
-- **Roast My Resume** - Get savage but actionable AI feedback on your CV
-- **Resume Gap Detector** - Compare resume against target company requirements
-- **CGPA to Package Estimator** - Estimate likely salary based on CGPA and college tier
-- **Scholarship Radar** - Find scholarships you qualify for based on your profile
-- **Code Mentor** - Paste broken code → AI explains the problem and the fix
-- **Monthly Wrap** - Spotify-style monthly recap with shareable story card
-- **Student Twin Match** - Find study partners with complementary skills
-- **Sleep & Study Correlation** - Analyze sleep patterns and study performance
+| Pillar | What it does |
+|--------|-------------|
+| 📚 **Study** | AI-generated quizzes, flashcards, smart notes, spaced repetition, and exam panic mode |
+| 💰 **Finance** | Expense tracking in ₹ (paise-level precision), savings goals, budget insights, and monthly wraps |
+| 🎤 **Interview** | AI mock interviews with real-time feedback on clarity, depth, confidence, and filler words |
 
-### 🏆 Gamification
-- **Manzil Life Score** - Unified score combining academic, financial, and interview metrics
-- **Daily 60-Second Blitz** - Quick challenges to maintain streak
-- **College Leaderboard** - See how you rank among peers
-- **Learning Quest Map** - Visual progress through topics
-- **Achievement Shelf** - Unlock badges for milestones
-- **Friend Challenges** - Send quiz challenges to friends
+A unified **TriMind Score** gamifies progress across all three areas with streaks, rewards, and shareable achievement cards.
 
-### 👤 Profile & Integrations
-- **GitHub Integration** - Display repositories, activity heatmap, and stats
-- **LeetCode Integration** - Show contest rating, problems solved, and recent submissions
-- **Activity Log** - 364-day activity heatmap
-- **Downloadable Profile Card** - Share your stats as an image
-- **WhatsApp Share** - Share weekly reports directly to WhatsApp
+---
 
 ## 🏗️ Architecture
 
-Manzil AI consists of three independent services:
+```
+Matrix/
+├── frontend/          → React 18 + Vite + Tailwind CSS 4
+├── backend/           → Node.js + Express 5 + PostgreSQL (Neon)
+└── files/             → Python FastAPI — AI/ML microservice
+```
 
-### Frontend (`frontend/`)
-- **Tech Stack**: React 18, TypeScript, Vite, React Router v7, Radix UI, Tailwind CSS
-- **Key Libraries**: Recharts (charts), Motion (animations), html2canvas (image generation)
-- **Port**: 5173
+### System Overview
 
-### Backend (`backend/`)
-- **Tech Stack**: Node.js, Express, PostgreSQL, Redis
-- **Responsibilities**: Authentication, user data, gamification, API orchestration
-- **Port**: 5000
+```mermaid
+graph LR
+    A[React Frontend<br/>:5173] -->|REST API| B[Express Backend<br/>:5000]
+    A -->|AI Endpoints| C[FastAPI Server<br/>:8000]
+    B -->|SQL| D[(PostgreSQL<br/>Neon)]
+    B -->|Cache| E[(Redis Polyfill<br/>File-based)]
+    C -->|Inference| F[Gemini / Groq AI]
+    B -->|Inference| F
+```
 
-### Python API (`files/`)
-- **Tech Stack**: FastAPI, SQLAlchemy, SQLite
-- **AI Provider**: Google Gemini API (with Groq fallback)
-- **Port**: 8000
+---
+
+## ✨ Features
+
+### Core Modules
+
+- **Study Dashboard** — Topic-based quiz generation, PDF/YouTube study material processing, flashcards with spaced repetition
+- **Finance Dashboard** — Manual/voice/UPI expense logging, category breakdown (food, transport, study, fun, bills), savings goals with progress tracking
+- **Interview Dashboard** — Domain-specific mock interviews (CS, Marketing, Finance, HR, Product, Data), AI feedback with scoring on 4 axes
+- **Profile Dashboard** — TriMind Score visualization, streak tracking, activity history, public profile sharing
+- **Gamification Hub** — Rewards, badges, achievements, and leaderboard
+- **Shareable Cards** — Export achievement cards as images
+
+### AI Tools (FastAPI)
+
+| Tool | Description |
+|------|-------------|
+| 🤖 Unified Chatbot | Context-aware AI assistant across all modules |
+| 📝 Smart Notes | AI-powered note summarization |
+| 🎙️ Lecture Recorder | Record and transcribe lectures |
+| 🔁 Spaced Repetition | Optimized review scheduling |
+| 📊 CGPA Estimator | CGPA-to-package prediction |
+| 📄 Resume Gap Detector | Identify resume weaknesses |
+| 🔥 Roast My Resume | Brutally honest resume feedback |
+| 🎓 Scholarship Radar | Find relevant scholarships |
+| 💤 Sleep & Study Correlation | Analyze sleep vs performance |
+| 📅 Monthly Wrap | End-of-month progress summary |
+| 🧑‍🤝‍🧑 Student Twin Match | Find study partners |
+| 💻 Code Mentor | AI coding assistance |
+| 🗺️ Mind Map Builder | Visual topic breakdowns |
+| 🌙 Night Owl Mode | Late-night study optimization |
+| 🚨 Panic Mode | Last-minute exam prep |
+| 🗣️ Debate Mode | Practice argumentation |
+| 🔄 Teach It Back | Explain concepts to learn them |
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- Python 3.9+
-- PostgreSQL 14+
-- Redis 7+
 
-### Environment Setup
+- **Node.js** ≥ 20
+- **Python** ≥ 3.10
+- **npm** (comes with Node.js)
 
-Create `.env` files in each service directory:
-
-**Backend (`backend/.env`)**:
-```env
-PORT=5000
-DATABASE_URL=postgresql://user:password@localhost:5432/manzil
-REDIS_URL=redis://localhost:6379
-JWT_SECRET=your-secret-key
-CORS_ORIGIN=http://localhost:5173
-```
-
-**Frontend (`frontend/.env`)**:
-```env
-VITE_API_URL=http://localhost:5000
-```
-
-**Python (`files/.env`)**:
-```env
-GEMINI_API_KEY=your-gemini-api-key
-```
-
-### Installation & Running
+### 1. Clone & Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/manzil-ai.git
-cd manzil-ai
+git clone https://github.com/your-username/matrix.git
+cd matrix
+```
 
-# Backend
-cd backend
-npm install
-npm run migrate  # Run database migrations
-npm run dev      # Start on http://localhost:5000
-
-# Python API (new terminal)
-cd files
-pip install -r requirements.txt
-uvicorn app.main:app --reload  # Start on http://localhost:8000
-
-# Frontend (new terminal)
+**Frontend:**
+```bash
 cd frontend
 npm install
-npm run dev     # Start on http://localhost:5173
 ```
 
-### Running Tests
+**Backend:**
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your database URL, API keys, etc.
+```
+
+**AI Server:**
+```bash
+cd files
+pip install -r requirements.txt
+cp .env.example .env
+# Add your GEMINI_API_KEY
+```
+
+### 2. Configure Environment
+
+Create `backend/.env` using the example:
+
+```env
+PORT=5000
+NODE_ENV=development
+DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+REDIS_URL=redis://localhost:6379
+JWT_ACCESS_SECRET=your_secret
+JWT_REFRESH_SECRET=your_secret
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=30d
+CORS_ORIGIN=http://localhost:5173
+GEMINI_API_KEY=your_key
+GROQ_API_KEY=your_key
+```
+
+### 3. Run Database Migrations
 
 ```bash
-# Python tests
-cd files
-pytest                    # Run all tests
-pytest test_predict_score.py  # Run specific test
+cd backend
+npm run migrate
 ```
 
-## 📊 Database Schema
+### 4. Start All Services
 
-### PostgreSQL (Backend)
-- `users` - User profiles, scores, streaks
-- `expenses` - Expense tracking with categories
-- `savings_goals` - Financial goals and progress
-- `study_uploads` - Uploaded study materials
-- `quiz_sessions` - Quiz attempts and scores
-- `quiz_answers` - Individual quiz responses with spaced repetition
-- `interview_sessions` - Mock interview sessions
-- `interview_answers` - Interview responses with AI feedback
-- `trimind_score_history` - Score history over time
+Open three terminals:
 
-### SQLite (Python API)
-- `quiz_sessions` - Local quiz session storage
+```bash
+# Terminal 1 — Frontend
+cd frontend
+npm run dev                    # → http://localhost:5173
+
+# Terminal 2 — Backend API
+cd backend
+npm run dev                    # → http://localhost:5000
+
+# Terminal 3 — AI Server
+cd files
+uvicorn app.main:app --reload  # → http://localhost:8000
+```
+
+---
+
+## 📁 Project Structure
+
+<details>
+<summary><b>Frontend</b> (React + Vite + Tailwind)</summary>
+
+```
+frontend/src/
+├── app/
+│   ├── components/      → Reusable UI (Sidebar, TopBar, ThemeToggle, Bot)
+│   │   └── ui/          → Shadcn-style primitives (Card, Button, etc.)
+│   └── pages/           → Route pages
+│       ├── HomeDashboard.tsx
+│       ├── StudyDashboard.tsx
+│       ├── FinanceDashboard.tsx
+│       ├── InterviewDashboard.tsx
+│       ├── ProfileDashboard.tsx
+│       ├── GamificationHub.tsx
+│       ├── ShareableCards.tsx
+│       ├── AITools.tsx
+│       └── aitools/     → Individual AI tool pages
+├── lib/                 → API clients (auth, study, finance, interview)
+├── assets/              → Static assets (logo)
+└── styles/              → Global CSS
+```
+
+</details>
+
+<details>
+<summary><b>Backend</b> (Express 5 + PostgreSQL)</summary>
+
+```
+backend/
+├── app.js               → Express app entry point
+├── controllers/         → Route handlers
+│   ├── auth.controller.js
+│   ├── finance.controller.js
+│   ├── study.controller.js
+│   ├── interview.controller.js
+│   ├── dashboard.controller.js
+│   ├── profile.controller.js
+│   └── reward.controller.js
+├── routes/              → Express route definitions
+├── db/
+│   ├── index.js         → PostgreSQL pool (Neon serverless)
+│   ├── schema.sql       → Full database schema
+│   ├── redis.js         → Redis client (file-system polyfill)
+│   └── migrations/      → SQL migration files
+├── middleware/           → Auth JWT guard, error handler
+├── cron/                → Scheduled jobs (score computation, daily nudges)
+├── services/            → Business logic layer
+├── utils/               → Helpers (response formatter, score computation)
+└── prompts/             → AI prompt templates
+```
+
+</details>
+
+<details>
+<summary><b>AI Server</b> (FastAPI + Gemini/Groq)</summary>
+
+```
+files/
+├── app/
+│   ├── main.py          → FastAPI app with 20+ routers
+│   ├── config.py        → Settings (API keys)
+│   ├── routers/         → One file per AI tool endpoint
+│   └── services/        → AI inference logic
+├── db/                  → SQLite for AI-specific data
+├── requirements.txt     → Python dependencies
+└── test_*.py            → Pytest test files
+```
+
+</details>
+
+---
+
+## 🗄️ Database Schema
+
+8 tables in PostgreSQL (Neon):
+
+| Table | Purpose |
+|-------|---------|
+| `users` | Auth, profile, TriMind score, streaks |
+| `expenses` | Financial transactions (paise precision) |
+| `savings_goals` | Target-based savings tracking |
+| `study_uploads` | Processed PDFs with flashcards/summaries |
+| `quiz_sessions` | Quiz metadata and scores |
+| `quiz_answers` | Individual answers with spaced repetition scheduling |
+| `interview_sessions` | Mock interview scores (clarity, depth, confidence, structure) |
+| `interview_answers` | Per-question feedback and filler word detection |
+| `trimind_score_history` | Daily composite score snapshots |
+
+---
 
 ## 🔌 API Endpoints
 
-### Backend (Port 5000)
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/dashboard` - Unified dashboard data
-- `GET /api/study/performance` - Study performance metrics
-- `POST /api/study/quiz/start` - Start a quiz session
-- `GET /api/finance/summary` - Financial summary
-- `POST /api/finance/expenses` - Log an expense
-- `GET /api/interview/sessions` - List interview sessions
-- `POST /api/interview/sessions` - Start mock interview
-- `GET /api/rewards/summary` - Gamification data
-- `GET /api/profile` - User profile with integrations
+### Backend (Express) — `localhost:5000`
 
-### Python API (Port 8000)
-- `POST /api/predict-score/` - Predict exam score
-- `POST /api/debate/` - Generate debate counterarguments
-- `POST /api/teach-back/` - Evaluate explanations
-- `GET /api/night-owl/` - Get peak study window
-- `POST /api/mind-map/` - Generate concept mind map
-- `POST /api/whatsapp/parse` - Parse WhatsApp chat exports
-- `POST /api/notes/summarize-text` - Summarize text notes
-- `POST /api/notes/summarize-pdf` - Summarize PDF notes
-- `POST /api/resume-gap/analyze` - Analyze resume gaps
-- `POST /api/roast/roast` - Roast a resume
-- `POST /api/mood/plan` - Create mood-based study plan
-- `POST /api/spaced-rep/generate` - Generate spaced repetition cards
-- `POST /api/cgpa/estimate` - Estimate salary package
-- `POST /api/scholarship/find` - Find scholarships
-- `POST /api/sleep/analyze` - Analyze sleep-study correlation
-- `POST /api/monthly-wrap/generate` - Generate monthly wrap
-- `POST /api/student-twin/find-match` - Find study partner
-- `POST /api/code/mentor` - Get code mentoring
-- `POST /api/chatbot/chat` - Unified AI chatbot
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/register` | Create account |
+| `POST` | `/api/auth/login` | Sign in |
+| `POST` | `/api/auth/refresh` | Refresh JWT tokens |
+| `GET` | `/api/auth/me` | Get current user |
+| `GET` | `/api/finance/expenses` | List expenses |
+| `POST` | `/api/finance/expenses` | Log expense |
+| `GET` | `/api/study/quiz-history` | Quiz session history |
+| `POST` | `/api/study/generate-quiz` | AI quiz generation |
+| `POST` | `/api/interview/start` | Start mock interview |
+| `GET` | `/api/dashboard/summary` | Aggregated dashboard stats |
+| `GET` | `/api/rewards/*` | Rewards & achievements |
+| `GET` | `/api/profile/*` | Profile data & public cards |
 
-## 🧠 Cron Jobs
+### AI Server (FastAPI) — `localhost:8000`
 
-The backend runs scheduled jobs:
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/chatbot/chat` | Unified AI chatbot |
+| `POST` | `/api/predict-score/predict` | Score prediction |
+| `POST` | `/api/notes/summarize` | Smart notes |
+| `POST` | `/api/lecture/transcribe` | Lecture transcription |
+| `POST` | `/api/spaced-rep/generate` | Spaced repetition cards |
+| `POST` | `/api/cgpa/estimate` | CGPA to package |
+| `POST` | `/api/resume-gap/analyze` | Resume analysis |
+| `POST` | `/api/roast/analyze` | Resume roast |
+| `POST` | `/api/scholarship/search` | Scholarship finder |
+| `POST` | `/api/code/review` | Code review |
+| `GET` | `/docs` | Swagger UI (auto-generated) |
 
-- **computeScores** (8 PM UTC) - Calculates Manzil Life Score for active users
-- **dailyNudge** (2 AM UTC) - Generates personalized daily nudges stored in Redis
+---
 
-## 🎨 Design System
+## 🛠️ Tech Stack
 
-### Colors
-- **Emerald** (`#0EA882`) - Study/Academic
-- **Saffron** (`#E8620A`) - Finance
-- **Violet** (`#5B47E0`) - Interview/Career
-- **Rose** (`#D93B3B`) - Alerts/Errors
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 18, Vite 6, Tailwind CSS 4, Motion (Framer), Radix UI, Recharts, Lucide Icons |
+| **Backend** | Node.js 24, Express 5, JWT (access + refresh), bcrypt, Helmet, node-cron |
+| **AI Server** | Python 3, FastAPI, Gemini AI, Groq, SQLAlchemy |
+| **Database** | PostgreSQL (Neon Serverless), Redis polyfill (file-based) |
+| **Dev Tools** | Nodemon, Vite HMR, Uvicorn hot reload |
 
-### Typography
-- **Display**: Custom font for headings and scores
-- **Sans**: DM Sans for body text
-- **Mono**: For numbers and code
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the ISC License.
+---
 
 ## 👥 Team
 
-- **Aditya Jain** (Team Lead & Backend Development)
-- **Samay Parashar** (Ai Integration)
-- **Hardik Agarwal** (Frontend Development)
+| Name | Role | Responsibilities |
+|------|------|-----------------|
+| **Aditya** | 🧭 Team Lead / Backend Lead / AI Integration | Project architecture, Express API, database design, Gemini/Groq integration, deployment |
+| **Hardik** | 🎨 Frontend Developer | React UI, Tailwind styling, dashboard pages, responsive design, animations |
+| **Samay** | 🤖 AI/ML Developer | FastAPI AI server, prompt engineering, AI tools (Smart Notes, Resume Roast, Spaced Rep, etc.) |
 
-## 📞 Contact
+---
 
-- Email: adityaalba27@gmail.com
-- LinkedIn: [Aditya Jain](https://www.linkedin.com/in/adityajain-dev/)
-- LinkedIn: [Samay Parashar](https://www.linkedin.com/in/samay-parashar-95833b382/)
-- LinkedIn: [Hardik Agarwal](https://www.linkedin.com/in/hardik-agarwal-85a90a382/)
+## 📜 License
 
+This project is licensed under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
+---
 
-Built for the 15 million Indian students preparing for placements. Made in India, for India.
+<p align="center">
+  Built with ☕ and late nights by <strong>Aditya</strong>, <strong>Hardik</strong> & <strong>Samay</strong>
+</p>

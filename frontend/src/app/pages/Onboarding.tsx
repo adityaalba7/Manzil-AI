@@ -1,6 +1,6 @@
 import { Card } from "../components/ui/card";
 import { BookOpen, IndianRupee, Video, ArrowRight } from "lucide-react";
-import logo from "../../assets/logo.png";
+
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
