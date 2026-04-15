@@ -2,18 +2,16 @@ CLAUDE.md
 .claude
 docs/
 
-# Environment variables (NEVER push API keys)
 .env
 *.env
 files/.env
 backend/.env
+frontend/.env.production
 
-# Dependencies
 node_modules/
 __pycache__/
 *.pyc
 
-# Build output
 dist/
 build/
 backend/redis_polyfill.json

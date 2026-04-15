@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-// The Python FastAPI server runs on port 8000 by default and handles AI-only tools.
+// The Python FastAPI server handles AI-only tools.
+// Uses VITE_AI_URL in production (Render), falls back to localhost:8000 in dev.
 export const pythonApi = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: `${import.meta.env.VITE_AI_URL || 'http://localhost:8000'}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
